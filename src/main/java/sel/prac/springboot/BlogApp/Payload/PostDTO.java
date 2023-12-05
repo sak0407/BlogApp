@@ -1,7 +1,6 @@
-package sel.prac.springboot.BlogApp.DTO;
+package sel.prac.springboot.BlogApp.Payload;
 
 import lombok.Data;
-import lombok.Getter;
 
 import java.util.Date;
 

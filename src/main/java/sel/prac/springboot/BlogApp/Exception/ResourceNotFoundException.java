@@ -1,8 +1,10 @@
 package sel.prac.springboot.BlogApp.Exception;
 
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+@Getter
 @ResponseStatus(value = HttpStatus.NOT_FOUND)    //This will cause spring boot to responsed with specific status code
 public class ResourceNotFoundException extends RuntimeException{
 
@@ -17,15 +19,5 @@ public class ResourceNotFoundException extends RuntimeException{
         this.fieldvalue = fieldvalue;
     }
 
-    public String getResourcename() {
-        return resourcename;
-    }
 
-    public String getFieldname() {
-        return fieldname;
-    }
-
-    public long getFieldvalue() {
-        return fieldvalue;
-    }
 }

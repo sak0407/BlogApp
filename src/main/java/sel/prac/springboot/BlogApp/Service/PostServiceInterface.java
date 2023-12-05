@@ -1,7 +1,6 @@
 package sel.prac.springboot.BlogApp.Service;
 
-import sel.prac.springboot.BlogApp.DTO.PostDTO;
-import sel.prac.springboot.BlogApp.Entity.Post;
+import sel.prac.springboot.BlogApp.Payload.PostDTO;
 
 import java.util.List;
 

@@ -4,8 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sel.prac.springboot.BlogApp.DTO.PostDTO;
-import sel.prac.springboot.BlogApp.Entity.Post;
+import sel.prac.springboot.BlogApp.Payload.PostDTO;
 import sel.prac.springboot.BlogApp.Service.Impl.PostServiceImpl;
 
 import java.util.List;

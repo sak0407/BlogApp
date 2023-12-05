@@ -2,10 +2,8 @@ package sel.prac.springboot.BlogApp.Service.Impl;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-import sel.prac.springboot.BlogApp.DTO.PostDTO;
+import sel.prac.springboot.BlogApp.Payload.PostDTO;
 import sel.prac.springboot.BlogApp.Entity.Post;
 import sel.prac.springboot.BlogApp.Exception.ResourceNotFoundException;
 import sel.prac.springboot.BlogApp.Repository.PostRepository;
@@ -13,7 +11,6 @@ import sel.prac.springboot.BlogApp.Service.PostServiceInterface;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,10 +27,10 @@ public class PostServiceImpl implements PostServiceInterface {
 
 
         //Converting DTO to Entity
-        Post post=modelMapper.map(postDTO,Post.class);
+        Post post=mapToEntity(postDTO);
         Post postResponse=postRepository.save(post);
         //Converting postResponse to PostDTO
-        PostDTO postDTOResponse=modelMapper.map(postResponse,PostDTO.class);
+        PostDTO postDTOResponse=mapToDto(postResponse);
 
         return postDTOResponse;
     }
@@ -43,8 +40,7 @@ public class PostServiceImpl implements PostServiceInterface {
 
          List<Post> posts= postRepository.findAll();
 
-         List<PostDTO> postDTOList=posts.stream().map(post ->
-             modelMapper.map(post,PostDTO.class)).collect(Collectors.toList());
+         List<PostDTO> postDTOList=posts.stream().map(post ->mapToDto(post)).collect(Collectors.toList());
 
          return postDTOList;
 
@@ -54,7 +50,7 @@ public class PostServiceImpl implements PostServiceInterface {
     public PostDTO getPost(long id) {
 
         Post post=postRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Post","ID",id));
-        return modelMapper.map(post,PostDTO.class);
+        return mapToDto(post);
 
 
     }
@@ -70,14 +66,21 @@ public class PostServiceImpl implements PostServiceInterface {
         post.setContent(postDTO.getDescription());
         post.setUpdateDate(new Date());
 
-        Post updatedPOst=postRepository.save(post);
+        Post updatedPost=postRepository.save(post);
 
-        return modelMapper.map(updatedPOst,PostDTO.class);
+        return mapToDto(updatedPost);
     }
 
     @Override
     public void deletePost(long id) {
         Post post=postRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Post","ID",id));
         postRepository.delete(post);
+    }
+
+    private PostDTO mapToDto(Post post){
+        return modelMapper.map(post,PostDTO.class);
+    }
+    private Post mapToEntity(PostDTO postDTO){
+        return modelMapper.map(postDTO,Post.class);
     }
 }
