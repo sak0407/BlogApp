@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import sel.prac.springboot.BlogApp.DTO.PostDTO;
 import sel.prac.springboot.BlogApp.Entity.Post;
+import sel.prac.springboot.BlogApp.Exception.ResourceNotFoundException;
 import sel.prac.springboot.BlogApp.Repository.PostRepository;
 import sel.prac.springboot.BlogApp.Service.PostServiceInterface;
 
@@ -52,7 +53,7 @@ public class PostServiceImpl implements PostServiceInterface {
     @Override
     public PostDTO getPost(long id) {
 
-        Post post=postRepository.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"Id not found"));
+        Post post=postRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Post","ID",id));
         return modelMapper.map(post,PostDTO.class);
 
 
@@ -62,7 +63,7 @@ public class PostServiceImpl implements PostServiceInterface {
     public PostDTO updatePost(PostDTO postDTO, long id) {
 
         //get post by id
-        Post post=postRepository.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"Id not found"));
+        Post post=postRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Post","ID",id));
 
         post.setTopic(postDTO.getTopic());
         post.setDescription(postDTO.getContent());
@@ -76,7 +77,7 @@ public class PostServiceImpl implements PostServiceInterface {
 
     @Override
     public void deletePost(long id) {
-        Post post=postRepository.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"Id not found"));
+        Post post=postRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Post","ID",id));
         postRepository.delete(post);
     }
 }
