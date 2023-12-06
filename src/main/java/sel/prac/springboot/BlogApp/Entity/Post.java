@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -25,5 +26,9 @@ public class Post {
     private Date createdDate;
     @Column(name = "UPDATED_DATE")
     private Date updateDate;
+
+    @OneToMany(mappedBy = "post")
+    //@JoinColumn(name = "post_id",nullable = false) If we dont write this then also hibernate will create it
+    private Set<Comment> comment;
 
 }

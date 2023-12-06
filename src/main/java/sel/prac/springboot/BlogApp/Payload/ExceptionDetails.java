@@ -8,8 +8,8 @@ import java.util.Date;
 @Getter
 @AllArgsConstructor
 public class ExceptionDetails {
+    private Date timestamp;
     private String message;
     private String errordetails;
-    private Date timestamp;
 
 }

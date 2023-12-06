@@ -15,14 +15,22 @@ public class BlogCustomGlobalException {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ExceptionDetails> handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request){
 
-        ExceptionDetails exceptionDetails=new ExceptionDetails(ex.getMessage(), request.getDescription(false),new Date());
+        ExceptionDetails exceptionDetails=new ExceptionDetails(new Date(),ex.getMessage(), request.getDescription(false));
+
+        return new ResponseEntity<ExceptionDetails>(exceptionDetails, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(BlogAPIException.class)
+    public ResponseEntity<ExceptionDetails> handleBlogAPIException(BlogAPIException ex, WebRequest request){
+
+        ExceptionDetails exceptionDetails=new ExceptionDetails(new Date(),ex.getMessage(), request.getDescription(false));
 
         return new ResponseEntity<ExceptionDetails>(exceptionDetails, HttpStatus.NOT_FOUND);
     }
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ExceptionDetails> handleAllGlobalException(Exception ex,WebRequest request){
 
-        ExceptionDetails exceptionDetails=new ExceptionDetails((ex.getMessage()),request.getDescription(false),new Date());
+        ExceptionDetails exceptionDetails=new ExceptionDetails( new Date(),ex.getMessage(),request.getDescription(false));
 
         return new ResponseEntity<ExceptionDetails>(exceptionDetails,HttpStatus.INTERNAL_SERVER_ERROR);
     }

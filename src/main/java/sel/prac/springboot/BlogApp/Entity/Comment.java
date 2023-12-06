@@ -26,4 +26,7 @@ public class Comment {
     @Column(name = "UPDATED_DATE")
     private Date updated_date;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Post post;
+
 }

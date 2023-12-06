@@ -28,6 +28,8 @@ public class PostServiceImpl implements PostServiceInterface {
 
         //Converting DTO to Entity
         Post post=mapToEntity(postDTO);
+        post.setCreatedDate(new Date());
+        post.setUpdateDate(new Date());
         Post postResponse=postRepository.save(post);
         //Converting postResponse to PostDTO
         PostDTO postDTOResponse=mapToDto(postResponse);
