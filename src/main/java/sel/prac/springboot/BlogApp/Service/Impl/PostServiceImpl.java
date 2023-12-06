@@ -2,10 +2,15 @@ package sel.prac.springboot.BlogApp.Service.Impl;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import sel.prac.springboot.BlogApp.Payload.PostDTO;
 import sel.prac.springboot.BlogApp.Entity.Post;
 import sel.prac.springboot.BlogApp.Exception.ResourceNotFoundException;
+import sel.prac.springboot.BlogApp.Payload.PostResponse;
 import sel.prac.springboot.BlogApp.Repository.PostRepository;
 import sel.prac.springboot.BlogApp.Service.PostServiceInterface;
 
@@ -25,7 +30,6 @@ public class PostServiceImpl implements PostServiceInterface {
     @Override
     public PostDTO createPost(PostDTO postDTO) {
 
-
         //Converting DTO to Entity
         Post post=mapToEntity(postDTO);
         post.setCreatedDate(new Date());
@@ -38,13 +42,27 @@ public class PostServiceImpl implements PostServiceInterface {
     }
 
     @Override
-    public List<PostDTO> getAllPost() {
+    public PostResponse getAllPost(int pageNo, int pageSize,String sortBy,String sortDir) {
 
-         List<Post> posts= postRepository.findAll();
+        Sort sort=sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())?Sort.by(sortBy).ascending():
+                Sort.by(sortBy).descending();
 
-         List<PostDTO> postDTOList=posts.stream().map(post ->mapToDto(post)).collect(Collectors.toList());
 
-         return postDTOList;
+        Pageable pageable= PageRequest.of(pageNo,pageSize,sort);
+        Page<Post> page = postRepository.findAll(pageable);
+
+        List<Post> posts = page.getContent();
+        List<PostDTO> postDTOList=posts.stream().map(post ->mapToDto(post)).collect(Collectors.toList());
+
+        PostResponse postResponse=new PostResponse();
+        postResponse.setPageNo(page.getNumber());
+        postResponse.setPageSize(page.getSize());
+        postResponse.setContent(postDTOList);
+        postResponse.setTotalElements(page.getTotalElements());
+        postResponse.setLast(page.isLast());
+        postResponse.setFirst(page.isFirst());
+
+        return postResponse;
 
     }
 

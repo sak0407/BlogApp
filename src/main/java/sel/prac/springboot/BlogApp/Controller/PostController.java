@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sel.prac.springboot.BlogApp.Payload.PostDTO;
+import sel.prac.springboot.BlogApp.Payload.PostResponse;
 import sel.prac.springboot.BlogApp.Service.Impl.PostServiceImpl;
 
 import java.util.List;
@@ -17,8 +18,13 @@ public class PostController {
     PostServiceImpl postService;
 
     @GetMapping
-    public List<PostDTO> getAllPost(){
-        return postService.getAllPost();
+    public ResponseEntity<PostResponse> getAllPost(@RequestParam(value = "pageNo",defaultValue ="0" ,required = false) int pageNo,
+                                                   @RequestParam(value = "pageSize",defaultValue ="5",required = false ) int pageSize,
+                                                   @RequestParam(value = "sortBy",defaultValue ="topic",required = false)String sortBy,
+                                                   @RequestParam(value = "sortDir",defaultValue ="ASC",required = false)String sortDir)
+    {
+        PostResponse postResponse=postService.getAllPost(pageNo,pageSize,sortBy,sortDir);
+        return new ResponseEntity<PostResponse>(postResponse,HttpStatus.OK);
     }
 
     @PostMapping

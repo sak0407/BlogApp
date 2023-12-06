@@ -5,8 +5,9 @@ import lombok.*;
 
 import java.util.Date;
 import java.util.Set;
-
-@Data
+//@Data data lombok add tostring method which wont support join table
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 
