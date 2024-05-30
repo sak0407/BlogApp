@@ -15,6 +15,7 @@ import sel.prac.springboot.BlogApp.Payload.LoginDTO;
 import sel.prac.springboot.BlogApp.Payload.RegisterDTO;
 import sel.prac.springboot.BlogApp.Repository.RoleRepository;
 import sel.prac.springboot.BlogApp.Repository.UserRepository;
+import sel.prac.springboot.BlogApp.Security.JwtTokenProvider;
 import sel.prac.springboot.BlogApp.Service.AuthServiceInterface;
 
 import java.util.HashSet;
@@ -36,13 +37,19 @@ public class AuthServiceImpl implements AuthServiceInterface {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+    JwtTokenProvider jwtTokenProvider;
+
     @Override
     public String login(LoginDTO loginDTO) {
 
         Authentication authentication=authenticationManager.authenticate(new UsernamePasswordAuthenticationToken( loginDTO.getUsernameOrEmail(),loginDTO.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return "User Logged in Successfully";
+
+        String token=jwtTokenProvider.generateToken(authentication);
+
+        return token;
     }
 
     @Override
