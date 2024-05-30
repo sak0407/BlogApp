@@ -2,10 +2,12 @@ package sel.prac.springboot.BlogApp.Exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import sel.prac.springboot.BlogApp.Payload.ExceptionDetails;
+
 
 import java.util.Date;
 
@@ -33,6 +35,15 @@ public class BlogCustomGlobalException {
         ExceptionDetails exceptionDetails=new ExceptionDetails( new Date(),ex.getMessage(),request.getDescription(false));
 
         return new ResponseEntity<ExceptionDetails>(exceptionDetails,HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ExceptionDetails> handleAccessDeniedExceptionException(AccessDeniedException ex, WebRequest request){
+
+        ExceptionDetails exceptionDetails=new ExceptionDetails(new Date(),ex.getMessage(), request.getDescription(false));
+
+        return new ResponseEntity<ExceptionDetails>(exceptionDetails, HttpStatus.UNAUTHORIZED);
     }
 
 
