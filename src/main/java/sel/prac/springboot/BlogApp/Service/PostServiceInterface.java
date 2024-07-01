@@ -13,4 +13,6 @@ public interface PostServiceInterface {
     public PostDTO updatePost(PostDTO postDTO,long id);
     public void deletePost(long id);
 
+    public List<PostDTO> getPostsByCategory(Long categoryId);
+
 }

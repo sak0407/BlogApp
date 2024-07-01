@@ -27,9 +27,13 @@ public class Post {
     private Date createdDate;
     @Column(name = "UPDATED_DATE")
     private Date updateDate;
-
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     //@JoinColumn(name = "post_id",nullable = false) If we dont write this then also hibernate will create it
     private Set<Comment> comment;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    //foreighn key in child table i.e Post
+    @JoinColumn(name ="category_id")
+    private Category category;
 
 }

@@ -15,4 +15,5 @@ public class PostDTO {
     private Set<CommentDTO> comment;
     private Date createdDate;
     private Date updateDate;
+    private Long categoryId;
 }

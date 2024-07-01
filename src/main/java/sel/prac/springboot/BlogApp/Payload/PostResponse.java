@@ -3,6 +3,7 @@ package sel.prac.springboot.BlogApp.Payload;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import sel.prac.springboot.BlogApp.Entity.Category;
 
 import java.util.List;
 
@@ -17,5 +18,6 @@ public class PostResponse {
     private boolean last;
     private boolean first;
     private long totalElements;
+    private long categoryId;
 
 }
